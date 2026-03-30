@@ -35,18 +35,26 @@ echo -e "${BOLD}  Auto Enable QUIC.cloud${NC}"
 echo -e "${BOLD}═══════════════════════════════════════════════════════════════${NC}"
 echo ""
 
-# ─── Server IP ───────────────────────────────────────────────────────────────
+# ─── Server IP (argument $1 หรือ auto-detect) ───────────────────────────────
 DETECTED_IP=$(hostname -I 2>/dev/null | awk '{print $1}')
-echo -e "  Detected Server IP: ${BOLD}${DETECTED_IP}${NC}"
-echo ""
-read -rp "  กด Enter ใช้ IP นี้ หรือ พิมพ์ IP ใหม่: " INPUT_IP < /dev/tty
-SERVER_IP="${INPUT_IP:-$DETECTED_IP}"
+
+if [[ -n "$1" ]]; then
+    SERVER_IP="$1"
+elif [[ -t 0 ]]; then
+    # Interactive mode
+    echo -e "  Detected Server IP: ${BOLD}${DETECTED_IP}${NC}"
+    echo ""
+    read -rp "  กด Enter ใช้ IP นี้ หรือ พิมพ์ IP ใหม่: " INPUT_IP
+    SERVER_IP="${INPUT_IP:-$DETECTED_IP}"
+else
+    # Piped mode (curl | bash) — ใช้ auto-detect
+    SERVER_IP="$DETECTED_IP"
+fi
 
 if [[ -z "$SERVER_IP" ]]; then
     echo -e "${RED}ERROR: ไม่พบ Server IP${NC}"; exit 1
 fi
-echo ""
-echo -e "  ใช้ Server IP: ${BOLD}${SERVER_IP}${NC}"
+echo -e "  Server IP: ${BOLD}${SERVER_IP}${NC}"
 echo ""
 
 # ─── Build main domain list ─────────────────────────────────────────────────
@@ -140,9 +148,13 @@ fi
 
 # ─── Confirm ─────────────────────────────────────────────────────────────────
 echo -e "${YELLOW}  จะ auto-enable QUIC.cloud ให้ ${need_count} เว็บ${NC}"
-read -rp "  ดำเนินการต่อ? (y/N): " CONFIRM < /dev/tty
-if [[ "$CONFIRM" != "y" && "$CONFIRM" != "Y" ]]; then
-    echo -e "${GRAY}  ยกเลิก${NC}"; exit 0
+if [[ -t 0 ]]; then
+    read -rp "  ดำเนินการต่อ? (y/N): " CONFIRM
+    if [[ "$CONFIRM" != "y" && "$CONFIRM" != "Y" ]]; then
+        echo -e "${GRAY}  ยกเลิก${NC}"; exit 0
+    fi
+else
+    echo -e "${GRAY}  (pipe mode — ดำเนินการอัตโนมัติ)${NC}"
 fi
 echo ""
 
