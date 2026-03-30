@@ -39,7 +39,7 @@ echo ""
 DETECTED_IP=$(hostname -I 2>/dev/null | awk '{print $1}')
 echo -e "  Detected Server IP: ${BOLD}${DETECTED_IP}${NC}"
 echo ""
-read -rp "  กด Enter ใช้ IP นี้ หรือ พิมพ์ IP ใหม่: " INPUT_IP
+read -rp "  กด Enter ใช้ IP นี้ หรือ พิมพ์ IP ใหม่: " INPUT_IP < /dev/tty
 SERVER_IP="${INPUT_IP:-$DETECTED_IP}"
 
 if [[ -z "$SERVER_IP" ]]; then
@@ -140,7 +140,7 @@ fi
 
 # ─── Confirm ─────────────────────────────────────────────────────────────────
 echo -e "${YELLOW}  จะ auto-enable QUIC.cloud ให้ ${need_count} เว็บ${NC}"
-read -rp "  ดำเนินการต่อ? (y/N): " CONFIRM
+read -rp "  ดำเนินการต่อ? (y/N): " CONFIRM < /dev/tty
 if [[ "$CONFIRM" != "y" && "$CONFIRM" != "Y" ]]; then
     echo -e "${GRAY}  ยกเลิก${NC}"; exit 0
 fi
