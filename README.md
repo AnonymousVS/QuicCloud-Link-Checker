@@ -26,27 +26,11 @@ Script นี้จะสแกนทุก addon domain บนเซิร์�
 - LiteSpeed Web Server + LiteSpeed Cache plugin
 - Root access (SSH)
 - MariaDB / MySQL
-
-## วิธีติดตั้ง
-
-```bash
-cd /root
-git clone https://github.com/AnonymousVS/QuicCloud-Link-Checker.git
-chmod +x QuicCloud-Link-Checker/*.sh
-```
-
+- 
 ## วิธีใช้งาน
 
-### สแกนทั้งเซิร์ฟเวอร์
-
 ```bash
-bash /root/QuicCloud-Link-Checker/check-quiccloud-link.sh
-```
-
-### ทดสอบเว็บเดียว (พร้อม debug ทุก step)
-
-```bash
-bash /root/QuicCloud-Link-Checker/test-quiccloud-link.sh example.com
+curl -sL https://raw.githubusercontent.com/AnonymousVS/QuicCloud-Link-Checker/main/check-quiccloud-link.sh | bash
 ```
 
 ## หลักการทำงาน
