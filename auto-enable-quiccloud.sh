@@ -17,6 +17,7 @@ CYAN='\033[0;36m'; GRAY='\033[0;90m'; NC='\033[0m'; BOLD='\033[1m'
 TMPDIR=$(mktemp -d)
 WORKLIST="${TMPDIR}/worklist.txt"
 RESULT="${TMPDIR}/results.txt"
+touch "$WORKLIST" "$RESULT"
 trap "rm -rf ${TMPDIR}" EXIT
 
 # ─── Prerequisite checks ────────────────────────────────────────────────────
@@ -136,7 +137,11 @@ done < "$USERDOMAINS"
 
 echo -ne "\r                              \r"
 
-need_count=$(wc -l < "$WORKLIST" 2>/dev/null || echo 0)
+need_count=0
+if [[ -f "$WORKLIST" ]]; then
+    need_count=$(wc -l < "$WORKLIST" | tr -d '[:space:]')
+fi
+need_count=${need_count:-0}
 echo -e "  Total scanned: ${BOLD}${total}${NC}"
 echo -e "  NOT ACTIVATED: ${BOLD}${need_count}${NC}"
 echo ""
