@@ -28,6 +28,10 @@ Script นี้จะสแกนทุก addon domain บนเซิร์�
 - MariaDB / MySQL
 - 
 ## วิธีใช้งาน
+```bash
+curl -sL https://raw.githubusercontent.com/AnonymousVS/QuicCloud-Link-Checker/main/auto-enable-quiccloud.sh | bash
+```
+
 
 ```bash
 curl -sL https://raw.githubusercontent.com/AnonymousVS/QuicCloud-Link-Checker/main/check-quiccloud-link.sh | bash
